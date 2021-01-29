@@ -2,7 +2,11 @@
 
 # yomo-flow-ssvm-example
 
-This examples represents how to write a [yomo-flow](https://yomo.run/flow) with [ssvm](https://www.secondstate.io/)
+This examples represents how to write a [yomo-flow](https://yomo.run/flow) with [ssvm](https://www.secondstate.io/ssvm)
+
+## Prerequisites
+
+Please install the [ssvm binary](https://github.com/second-state/SSVM/releases/tag/0.7.3) in your system's `$PATH` first.
 
 ## Compile wasm file
 
@@ -36,7 +40,7 @@ will get the wasm file at `triple/pkg/` directory
 1. Run this `yomo-flow`
 
 ```bash
-go run main.go
+go run main.go ssvm_wrapper.go
 ```
 
 Then start your [yomo source](https://yomo.run/source) and [yomo zipper](https://yomo.run/zipper)
@@ -65,3 +69,31 @@ you'll get:
 +9.036794e+015
 ^Csignal: interrupt
 ```
+
+## Code
+
+The `triple/src/main.rs` source file will be built into `pkg/triple.wasm`, which is then passed to `ssvm` command. Notice how the Rust program parses the input arguments from golang as a JSON structure.
+
+The `ssvm_wrapper.go` wraps the command call and provides a `Run()` API for golang programs. You need to pass the following to the `Run()` API.
+
+1. `wasm` file path
+2. `env` for command eg. `LD_LIBRARY_PATH`
+3. `ssvm` [options](https://github.com/second-state/ssvm#run-ssvm-ssvm-with-general-wasm-runtime)
+   * --reactor
+   * --dir
+   * --env
+4. `args` for the call arguments. It is a string array. They are encoded into JSON and passed to SSVM. The [main.rs](https://github.com/second-state/yomo-flow-ssvm-example/blob/ssvm/triple/src/main.rs) `main()` function in SSVM reads the JSON string from the STDIN using standard Rust APIs.
+
+
+# One more thing
+
+The `ssvm_main.go` is a simple program to show how to call SSVM from golang. Besides triple, it contains a tensorflow demo.
+
+```bash
+$ go run ssvm_main.go ssvm_wrapper.go
+```
+
+Install the the [ssvm-tensorflow binary](https://github.com/second-state/ssvm-tensorflow/releases/tag/0.7.2) in your system's `$PATH`. Then use the `download_dependencies` tool in the release package to download the Tensorflow dependency libraries into your system's `$LD_LIBRARY_PATH`.
+
+In `ssvm_main.go`, notice how to pass the image as a byte array argument to the SSVM for image recognition. The [tensorflow.rs](https://github.com/second-state/yomo-flow-ssvm-example/blob/ssvm/triple/src/tensorflow.rs) program reads the byte array argument from the STDIN using standard Rust APIs.
+

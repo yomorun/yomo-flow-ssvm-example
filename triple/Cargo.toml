@@ -1,13 +1,21 @@
 [package]
-name = "a22"
+name = "triple"
 version = "0.1.0"
 authors = ["C.C. <fanweixiao@gmail.com>"]
 edition = "2018"
 
-[lib]
-name = "triple_lib"
-path = "src/lib.rs"
-crate-type =["cdylib"]
+[[bin]]
+name = "triple"
+path = "src/main.rs"
+
+[[bin]]
+name = "tensorflow"
+path = "src/tensorflow.rs"
 
 [dependencies]
 wasm-bindgen = "=0.2.61"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "=1.0.44"
+ssvm-wasi-helper = "=0.1.0"
+ssvm_tensorflow_interface = "^0.1.3"
+base64 = "0.12.3"

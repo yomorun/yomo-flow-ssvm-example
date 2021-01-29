@@ -2,9 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"strconv"
 
-	wasm "github.com/wasmerio/go-ext-wasm/wasmer"
 	y3 "github.com/yomorun/y3-codec-golang"
 	"github.com/yomorun/yomo/pkg/quic"
 )
@@ -72,15 +73,12 @@ func onObserve(v []byte) (interface{}, error) {
 }
 
 func triple(i float64) float64 {
-	// Reads the WebAssembly module as bytes.
-	bytes, _ := wasm.ReadBytes("triple/pkg/triple_lib_bg.wasm")
-	// Instantiates the WebAssembly module.
-	instance, _ := wasm.NewInstance(bytes)
-	defer instance.Close()
-	// Gets the `sum` exported function from the WebAssembly instance.
-	sum := instance.Exports["triple"]
-	// Calls that exported function with Go standard values. The WebAssembly
-	// types are inferred and values are casted automatically.
-	result, _ := sum(i)
-	return result.ToF64()
+	f := fmt.Sprintf("%f", i)
+	wasmOpts := SSVMWasmOptions {
+		wasmFile: "/root/yomo-flow-ssvm-example/triple/pkg/triple.wasm",
+	}
+	result := Run(wasmOpts, []string{f})
+	s, _ := strconv.ParseFloat(string(result), 64)
+	return s
 }
+

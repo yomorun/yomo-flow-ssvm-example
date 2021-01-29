@@ -2,7 +2,7 @@
 
 # yomo-flow-ssvm-example
 
-This examples represents how to write a [yomo-flow](https://yomo.run/flow) with [ssvm](https://www.secondstate.io/ssvm)
+This examples represents how to write a [yomo-flow](https://yomo.run/flow) with [SSVM](https://www.secondstate.io/ssvm), From our experience [Edge computing ❤️ WebAssembly](#why-webassembly-in-edge-computing) more than others, with SSVM, YoMo can help developers reach more goals and keep improving the value of edge computing
 
 ## Prerequisites
 

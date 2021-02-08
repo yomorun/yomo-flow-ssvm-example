@@ -3,6 +3,6 @@ module github.com/yomorun/yomo-sink-faunadb
 go 1.15
 
 require (
-	github.com/yomorun/y3-codec-golang v1.6.2
+	github.com/yomorun/y3-codec-golang v1.6.3
 	github.com/yomorun/yomo v0.7.6
 )

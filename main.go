@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/second-state/ssvm-go/ssvm"
 	y3 "github.com/yomorun/y3-codec-golang"
 	"github.com/yomorun/yomo/pkg/quic"
-	"github.com/second-state/ssvm-go/ssvm"
 )
 
 var (
@@ -56,8 +56,8 @@ func (s *quicServerHandler) Read(st quic.Stream) error {
 
 type noiseData struct {
 	Noise float64 `yomo:"0x11" fauna:"noise"` // Noise value
-	Time	int64	 `yomo:"0x12" fauna:"time"`	// Timestamp (ms)
-	From	string	`yomo:"0x13" fauna:"from"`	// Source IP
+	Time  int64   `yomo:"0x12" fauna:"time"`  // Timestamp (ms)
+	From  string  `yomo:"0x13" fauna:"from"`  // Source IP
 }
 
 func onObserve(v []byte) (interface{}, error) {
@@ -87,9 +87,9 @@ func triple(i float64) float64 {
 	var wasi = vm.GetImportObject(ssvm.WASI)
 	wasi.InitWasi(
 		[]string{},
-		os.Environ(),		/// The envs
+		os.Environ(),    /// The envs
 		[]string{".:."}, /// The mapping directories
-		[]string{},			/// The preopens will be empty
+		[]string{},      /// The preopens will be empty
 	)
 
 	/// Instantiate wasm
@@ -100,4 +100,3 @@ func triple(i float64) float64 {
 
 	return s[0].(float64)
 }
-
